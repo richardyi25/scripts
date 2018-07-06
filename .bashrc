@@ -119,210 +119,209 @@ fi
 #=======================================================================================================
 #=======================================================================================================
 #=======================================================================================================
-#Disabling all macros to practice for CCO
-#
-#function stdbuild(){
-#	echo "==========================="
-#	echo Compiling: $NAME
-#	g++ -std=c++14 -O2 $NAME.cpp -o $NAME
-#	echo ===RUNNING===
-#	./$NAME
-#	echo
-#	echo "==========================="
-#}
-#
-#function jinit(){
-#	mkdir $1
-#	cd $1
-#	mkdir bin
-#	mkdir doc
-#}
-#
-#function jname(){
-#	JNAME=$1
-#}
-#
-#function jbuild(){
-#	echo ==COMPILING==
-#	javac -d out/ *.java
-#	echo ===RUNNING===
-#	java -cp out $JNAME
-#	echo ===FINISHED===
-#}
-#
-#function comp(){
-#	echo "==========================="
-#	echo Compiling: $NAME
-#	time g++ -g -std=c++17 -Wall -Wextra -Wno-unused-result -D LOCAL -O2 $NAME.cpp -o $NAME 2>&1 | tee $NAME.cerr
-#	printf "\n"
-#}
-#
-#function build(){
-#	echo "==========================="
-#	echo Compiling: $NAME
-#	time g++ -g -std=c++17 -Wall -Wextra -Wno-unused-result -D LOCAL -O2 $NAME.cpp -o $NAME 2>&1 | tee $NAME.cerr
-#	echo Excecution Time:
-#	time ./$NAME < $NAME.in > $NAME.out 2> $NAME.err
-#	echo "==========================="
-#}
-#
-#function solve(){
-#	NAME=$1
-#	vim $NAME.cpp
-#}
-#
-#function init(){
-#	NAME=$1
-#	if [ -f $NAME.cpp ]; then
-#		echo "File already exists."
-#		return
-#	fi
-#	cp ~/template.cpp $NAME.cpp
-#	touch $NAME.cpp
-#	touch $NAME.in
-#	touch $NAME.out
-#	touch $NAME.err
-#	touch $NAME.cerr
-#	cp ~/gen.cpp $NAME.cc
-#	vim $NAME.cpp
-#}
-#
-#function search(){
-#	ls -a | grep -i $1
-#}
-#
-#function gs(){
-#	python ~/GSgen.py < $1.java > $1.txt
-#}
-#
-#function mkcdir(){
-#	mkdir $1 && cd $1
-#}
-#
-#function mk(){
-#	mkdir $1 && cd $1
-#}
-#
-#function gc(){
-#	google-chrome $1 &
-#}
-#
-#function gping(){
-#	ping -c $1 8.8.8.8
-#}
-#
-#function tkill(){
-#	pkill $1 --sig kill
-#}
-#
-#function judgeinit(){
-#	mkdir in
-#	mkdir out
-#	mkdir ans
-#	cd in
-#
-#	for i in `seq 1 10`;
-#	do
-#		touch $i.in
-#	done
-#
-#	cd ../ans
-#
-#	for i in `seq 1 10`;
-#	do
-#		touch $i.ans
-#	done
-#	cd ..
-#	cp ~/gen.cpp .
-#	vim gen.cpp ans.cpp -p &
-#}
-#
-#function judge(){
-#	javac $1.java 2> error.txt
-#	if [ $? -eq 0 ]
-#	then
-#		rm log.txt
-#
-#		for i in `seq 1 10`;
-#		do
-#			rm out/$i.out
-#		done
-#
-#		for i in `seq 1 10`;
-#		do
-#			echo "Judging Case #$i..."
-#			timeout $2 java $1 < in/$i.in > out/$i.out
-#			err=$?
-#
-#			if [ $err -ge 124 ]
-#			then
-#				echo "Case #$i: TLE"
-#				echo "Case #$i: TLE" >> log.txt
-#			elif [ $err -eq 0 ]
-#			then
-#				python ../judge.py $i
-#			else
-#				echo "Case #$i: RTE"
-#				echo "Case #$i: RTE" >> log.txt
-#			fi
-#		done
-#
-#		python ../verdict.py
-#		cat verdict.txt
-#	else
-#		echo "Compile Error"
-#		cat error.txt
-#	fi
-#}
-#
-#function ans(){
-#	g++ -std=c++14 -Wall -Wextra -Werror -Wno-unused-result -O2 -D LOCAL ans.cpp -o answer
-#	if [ $? -eq 0 ]
-#	then
-#		for i in `seq 1 10`
-#		do
-#			echo "Answering Case $i"
-#			./answer < in/$i.in > ans/$i.ans
-#		done
-#	fi
-#}
-#
-#function gen(){
-#	g++ -std=c++14 -Wall -Wextra -Werror -Wno-unused-result -O2 gen.cpp -o gen
-#	if [ $? -eq 0 ]
-#	then
-#		for i in `seq $1 $2`
-#		do
-#			./gen > in/$i.in $i
-#		done
-#	fi
-#}
-#export LFTP_PASS=`cat ~/.lftp_pass`
-#alias cd..='cd ..' #lol
-#alias cls='printf "\033c"'
-#alias ref='source ~/.bashrc'
-#alias vedit='vim ~/.vimrc'
-#alias edit='vim ~/.bashrc'
-#alias name='echo $NAME'
-#alias jvim='vim *.java -p'
-#alias jdoc='rm doc/* -r && javadoc -quiet -d doc/ -author -version -private *.java'
-#alias rmswp='sudo rm .*.swp'
-#alias rm='trash'
-#alias nuke='trash *'
-#alias dmoj='cd ~/Comp/DMOJ'
-#alias timus='cat ~/Comp/Timus/judge.txt'
-#alias fuck='eval "sudo $(fc -ln -1)"'
-#alias options='echo download-data upload-data upload-code'
-#alias download-data='cd ~/Dev/mactimetable/ && lftp -c "lftp files.000webhost.com && lftp -u timetables,$LFTP_PASS && mirror data/ --exclude-glob verify.py"'
-#alias upload-data='cd ~/Dev/mactimetable/ && lftp -c "lftp files.000webhost.com && lftp -u timetables,$LFTP_PASS && mirror data/ --reverse --delete --exclude-glob .git/ --exclude-glob .*.swp --exclude-glob log.txt --exclude-glob verify.py"'
-#alias upload-code='echo "Remember to commit/push!" && cd ~/Dev/mactimetable/ && lftp -c "lftp files.000webhost.com && lftp -u timetables,$LFTP_PASS && mirror --reverse --delete --exclude-glob data/ --exclude-glob .git/ --exclude-glob .*.swp"'
-#alias php-serve='php -S localhost:8000'
-#alias verify='download-data && cd data/ && python verify.py'
-#alias check-data='cd ~/Dev/mactimetable/ && lftp -c "lftp files.000webhost.com && lftp -u timetables,$LFTP_PASS && cd data && cat temp.txt"'
-#alias db='comp && gdb -q $NAME'
-#
-#export USB=/media/richard/RICHARD
-#ulimit -c 1048576
-#ulimit -s 1048576
-#export TERM='xterm-256color'
-#export COLORTERM='gnome-terminal'
+
+function stdbuild(){
+	echo "==========================="
+	echo Compiling: $NAME
+	g++ -std=c++14 -O2 $NAME.cpp -o $NAME
+	echo ===RUNNING===
+	./$NAME
+	echo
+	echo "==========================="
+}
+
+function jinit(){
+	mkdir $1
+	cd $1
+	mkdir bin
+	mkdir doc
+}
+
+function jname(){
+	JNAME=$1
+}
+
+function jbuild(){
+	echo ==COMPILING==
+	javac -d out/ *.java
+	echo ===RUNNING===
+	java -cp out $JNAME
+	echo ===FINISHED===
+}
+
+function comp(){
+	echo "==========================="
+	echo Compiling: $NAME
+	time g++ -g -std=c++17 -Wall -Wextra -Wno-unused-result -D LOCAL -O2 $NAME.cpp -o $NAME 2>&1 | tee $NAME.cerr
+	printf "\n"
+}
+
+function build(){
+	echo "==========================="
+	echo Compiling: $NAME
+	time g++ -g -std=c++17 -Wall -Wextra -Wno-unused-result -D LOCAL -O2 $NAME.cpp -o $NAME 2>&1 | tee $NAME.cerr
+	echo Excecution Time:
+	time ./$NAME < $NAME.in > $NAME.out 2> $NAME.err
+	echo "==========================="
+}
+
+function solve(){
+	NAME=$1
+	vim $NAME.cpp
+}
+
+function init(){
+	NAME=$1
+	if [ -f $NAME.cpp ]; then
+		echo "File already exists."
+		return
+	fi
+	cp ~/template.cpp $NAME.cpp
+	touch $NAME.cpp
+	touch $NAME.in
+	touch $NAME.out
+	touch $NAME.err
+	touch $NAME.cerr
+	cp ~/gen.cpp $NAME.cc
+	vim $NAME.cpp
+}
+
+function search(){
+	ls -a | grep -i $1
+}
+
+function gs(){
+	python ~/GSgen.py < $1.java > $1.txt
+}
+
+function mkcdir(){
+	mkdir $1 && cd $1
+}
+
+function mk(){
+	mkdir $1 && cd $1
+}
+
+function gc(){
+	google-chrome $1 &
+}
+
+function gping(){
+	ping -c $1 8.8.8.8
+}
+
+function tkill(){
+	pkill $1 --sig kill
+}
+
+function judgeinit(){
+	mkdir in
+	mkdir out
+	mkdir ans
+	cd in
+
+	for i in `seq 1 10`;
+	do
+		touch $i.in
+	done
+
+	cd ../ans
+
+	for i in `seq 1 10`;
+	do
+		touch $i.ans
+	done
+	cd ..
+	cp ~/gen.cpp .
+	vim gen.cpp ans.cpp -p &
+}
+
+function judge(){
+	javac $1.java 2> error.txt
+	if [ $? -eq 0 ]
+	then
+		rm log.txt
+
+		for i in `seq 1 10`;
+		do
+			rm out/$i.out
+		done
+
+		for i in `seq 1 10`;
+		do
+			echo "Judging Case #$i..."
+			timeout $2 java $1 < in/$i.in > out/$i.out
+			err=$?
+
+			if [ $err -ge 124 ]
+			then
+				echo "Case #$i: TLE"
+				echo "Case #$i: TLE" >> log.txt
+			elif [ $err -eq 0 ]
+			then
+				python ../judge.py $i
+			else
+				echo "Case #$i: RTE"
+				echo "Case #$i: RTE" >> log.txt
+			fi
+		done
+
+		python ../verdict.py
+		cat verdict.txt
+	else
+		echo "Compile Error"
+		cat error.txt
+	fi
+}
+
+function ans(){
+	g++ -std=c++14 -Wall -Wextra -Werror -Wno-unused-result -O2 -D LOCAL ans.cpp -o answer
+	if [ $? -eq 0 ]
+	then
+		for i in `seq 1 10`
+		do
+			echo "Answering Case $i"
+			./answer < in/$i.in > ans/$i.ans
+		done
+	fi
+}
+
+function gen(){
+	g++ -std=c++14 -Wall -Wextra -Werror -Wno-unused-result -O2 gen.cpp -o gen
+	if [ $? -eq 0 ]
+	then
+		for i in `seq $1 $2`
+		do
+			./gen > in/$i.in $i
+		done
+	fi
+}
+export LFTP_PASS=`cat ~/.lftp_pass`
+alias cd..='cd ..' #lol
+alias cls='printf "\033c"'
+alias ref='source ~/.bashrc'
+alias vedit='vim ~/.vimrc'
+alias edit='vim ~/.bashrc'
+alias name='echo $NAME'
+alias jvim='vim *.java -p'
+alias jdoc='rm doc/* -r && javadoc -quiet -d doc/ -author -version -private *.java'
+alias rmswp='sudo rm .*.swp'
+alias rm='trash'
+alias nuke='trash *'
+alias dmoj='cd ~/Comp/DMOJ'
+alias timus='cat ~/Comp/Timus/judge.txt'
+alias fuck='eval "sudo $(fc -ln -1)"'
+alias options='echo download-data upload-data upload-code'
+alias download-data='cd ~/Dev/mactimetable/ && lftp -c "lftp files.000webhost.com && lftp -u timetables,$LFTP_PASS && mirror data/ --exclude-glob verify.py"'
+alias upload-data='cd ~/Dev/mactimetable/ && lftp -c "lftp files.000webhost.com && lftp -u timetables,$LFTP_PASS && mirror data/ --reverse --delete --exclude-glob .git/ --exclude-glob .*.swp --exclude-glob log.txt --exclude-glob verify.py"'
+alias upload-code='echo "Remember to commit/push!" && cd ~/Dev/mactimetable/ && lftp -c "lftp files.000webhost.com && lftp -u timetables,$LFTP_PASS && mirror --reverse --delete --exclude-glob data/ --exclude-glob .git/ --exclude-glob .*.swp"'
+alias php-serve='php -S localhost:8000'
+alias verify='download-data && cd data/ && python verify.py'
+alias check-data='cd ~/Dev/mactimetable/ && lftp -c "lftp files.000webhost.com && lftp -u timetables,$LFTP_PASS && cd data && cat temp.txt"'
+alias db='comp && gdb -q $NAME'
+
+export USB=/media/richard/RICHARD
+ulimit -c 1048576
+ulimit -s 1048576
+export TERM='xterm-256color'
+export COLORTERM='gnome-terminal'
