@@ -1,10 +1,12 @@
-"set spell spelllang=en_ca
+"Spellcheck
+set spell spelllang=en_ca
+set spell
 
 "Color scheme
-syntax enable
-let g:solarized_termtrans=1
-set background=light
-colorscheme solarized
+"syntax enable
+"let g:solarized_termtrans=1
+"set background=dark
+"colorscheme solarized
 
 "General Behaviour
 filetype indent on
@@ -52,10 +54,11 @@ nnoremap <C-Up> <C-w>-
 nnoremap <C-Down> <C-w>+
 
 "Compile/Run
-nnoremap gb :w<CR>:!printf "\033c" && printf "================\n  Compiling...\n================\n" && time g++ -g -std=c++17 -Wall -Wextra -Wno-unused-result -D LOCAL -O2 %:r.cpp -o %:r 2>&1 \| tee %:r.cerr && printf "\n================\n   Running...\n================\n" && time ./%:r < %:r.in > %:r.out 2> %:r.err && printf "\n\n\n\n"<CR>
+nnoremap gb :w<CR>:!printf "\033c" && printf "================\n  Compiling...\n================\n" && time g++ -O3 -g -std=c++14 -Wall -Wextra -Wpedantic -Wshadow -Wchkp -D LOCAL %:r.cpp -o %:r 2>&1 \| tee %:r.cerr && printf "\n================\n   Running...\n================\n" && time ./%:r < %:r.in > %:r.out 2> %:r.err && printf "\n\n\n\n"<CR>
 "nnoremap go :!time python %:r.py < %:r.in > %:r.out<CR>
 "inoremap <F5> <Esc>:w<CR>:!printf "\033c" && printf "================\n  Compiling...\n================\n" && time g++ -g -std=c++17 -Wall -Wextra -Wno-unused-result -D LOCAL -O2 %:r.cpp -o %:r 2>&1 \| tee %:r.cerr && printf "\n================\n   Running...\n================\n" && time ./%:r < %:r.in > %:r.out 2> %:r.err && printf "\n\n\n\n"<CR>i
-nnoremap gc :w<CR>:!time g++ -std=c++14 -Wall -Wno-unused-result -O2 %:r.cc -o %:r_gen<CR>:!time ./%:r_gen > %:r.in<CR>
+nnoremap gc :w<CR>:!printf "\033c" && printf "================\n  Compiling...\n================\n" && time g++ -O3 -g -std=c++14 -Wall -Wextra -Wpedantic -Wshadow -Wchkp -Wno-unused-result -D LOCAL %:r.cc -o %:r_gen && printf "\n================\n   Running...\n================\n" && time ./%:r_gen > %:r.in && printf "\n\n\n\n"<CR>
+"nnoremap gc :w<CR>:!time g++ -std=c++14 -Wall -Wno-unused-result -O2 %:r.cc -o %:r_gen<CR>:!time ./%:r_gen > %:r.in<CR>
 nmap gq gc<CR>gb
 "Screw Java
 "nmap fj :!time javac -d out/ *.java<CR>:!java -cp out %:r<CR>
@@ -63,7 +66,7 @@ inoremap <F6> <Esc>:!time javac -d out/ *.java<CR>:!java -cp out %:r < %:r.in > 
 nnoremap <F10> :!rm doc/*<CR>:!time javadoc -quiet -d doc/ -author -version -private *.java<CR>
 "nnoremap <F11> :!pdflatex %:t && evince %:r.pdf<CR>
 nnoremap gpr :!evince %:r.pdf<CR>
-nnoremap gpc :!pdflatex --shell-escape %:t && evince %:r.pdf<CR>
+nnoremap gpc :!printf "\033c" && pdflatex --shell-escape -halt-on-error %:t && evince %:r.pdf<CR>
 nnoremap gp <Nop>
 
 "NERDTree
@@ -86,10 +89,14 @@ nnoremap gvv :tabnew ~/.vimrc<CR>
 nnoremap gvt :tabnew ~/template.cpp<CR>
 nnoremap gvg :tabnew ~/gen.cpp<CR>
 nnoremap <Esc> :w<CR>
-nnoremap grd :%s/\t\+d(".\+\n//g<CR>
+nnoremap grd :%s/.\+d(".\+\n//g<CR>
 "nmap gi <nop>
 nmap gi :vsp %:r.err<CR>fh30<C-L>:tabnew %:r.in<CR>:vsp %:r.out<CR>:vsp %:r.err<CR>2fh:tabnew %:r.cc<CR>:tabnew %:r.cerr<CR>gk
-"nmap gib :vsp %:r.in<cr>:vsp %:r.cerr<cr>fh:sp %:r.out<cr>fl:sp %:r.err<cr>fhfh:vert res 70<cr>fl:vert res 20<cr>fh
+
+"autocmd FileType cpp :vsp %:r.err<CR>fh30<C-L>:tabnew %:r.in<CR>:vsp %:r.out<CR>:vsp %:r.err<CR>2fh:tabnew %:r.cc<CR>:tabnew %:r.cerr<CR>gk
+" Broken ^
+
+"nmap gx :vsp %:r.in<cr>:vsp %:r.cerr<cr>fh:sp %:r.out<cr>fl:sp %:r.err<cr>fhfh:vert res 70<cr>fl:vert res 20<cr>fh
 nnoremap gd /d("<CR>n
 "noremap f `
 
