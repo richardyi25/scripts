@@ -98,7 +98,7 @@ nnoremap gp <Nop>
 
 "Misc Bindings
 nnoremap grs :so ~/.vimrc<CR>:e<CR>
-nnoremap gn :noh<CR>
+nnoremap gn :noh<CR>:syntax sync fromstart<CR>
 nnoremap Q <C-q>
 nnoremap K <nop>
 vnoremap K <nop>
@@ -113,6 +113,7 @@ nnoremap gvv :tabnew ~/.vimrc<CR>
 nnoremap gvt :tabnew ~/template.cpp<CR>
 nnoremap gvg :tabnew ~/gen.cpp<CR>
 nnoremap gvs :tabnew ~/.vim/UltiSnips/tex.snippets<CR>
+nnoremap grh :syntax sync fromstart<CR>
 
 " Saving behavior
 nnoremap s :w<CR>
@@ -121,8 +122,7 @@ nnoremap S <NOP>
 
 " Competitive setup
 nnoremap grd :%s/.\+d(".\+\n//g<CR>
-nnoremap grh :%s/#define d(.\+\n//g<CR>
-nnoremap gd /d("<CR>n
+nnoremap gre :%s/nnoremap gd /d("<CR>n
 nmap gi :vsp err.log<CR>fh30<C-L>:tabnew in.txt<CR>:sp comp.log<CR>ge5<C-J>:vsp out.txt<CR>:vsp err.log<CR>2fh:tabnew gen.cpp<CR>:vsp g_in.txt<CR>fh30<C-L>:tabnew g_in.txt<CR>:sp g_comp.log<CR>ge5<C-J>:vsp in.txt<CR>:vsp g_err.log<CR>2fh:tabnew slow.cpp<CR>:vsp s_err.log<CR>fh30<C-L>:tabnew in.txt<CR>:sp s_comp.log<CR>ge5<C-J>:vsp s_out.txt<CR>:vsp s_err.log<CR>2fhgk
 autocmd BufRead sol.cpp nested normal gi
 
@@ -175,7 +175,7 @@ autocmd BufRead,BufNewFile *.v ab product ∏
 autocmd BufRead,BufNewFile *.v ab lambda λ
 
 " TeX autocompile
-autocmd BufRead *.tex nnoremap gl :w <CR> :!printf "\033c" && pdflatex --shell-escape -halt-on-error %:t > err.log 2>&1 <CR><CR>
+autocmd BufRead *.tex nnoremap gb :w <CR> :!printf "\033c" && pdflatex --shell-escape -halt-on-error %:t > err.log 2>&1 <CR><CR>
 
 " Scroll to the end when entering err.log (VERY EXPERIMENTAL)
 autocmd BufEnter err.log normal G
@@ -183,16 +183,24 @@ autocmd BufEnter err.log normal G
 " Racket compile
 autocmd BufRead,BufNewFile *.rkt nnoremap gb :w<CR>:!printf "\033c" && printf "\n================\n   Running...\n================\n" && racket -l errortrace -t sol.rkt < in > out 2> err<CR>:!python ~/parse_trace.py %:p:h/err<CR><CR>
 
-autocmd BufRead,BufNewFile sol.rkt sp err
-autocmd BufRead,BufNewFile sol.rkt resize 1
-autocmd BufRead,BufNewFile sol.rkt wincmd k
-autocmd BufRead,BufNewFile sol.rkt vsp in
+
 autocmd BufRead,BufNewFile sol.rkt sp out
-autocmd BufRead,BufNewFile sol.rkt vertical resize -25
+autocmd BufRead,BufNewFile sol.rkt tabnew err
+autocmd BufRead,BufNewFile sol.rkt normal gT
+" autocmd BufRead,BufNewFile sol.rkt sp err
+" autocmd BufRead,BufNewFile sol.rkt resize 1
+" autocmd BufRead,BufNewFile sol.rkt wincmd k
+" autocmd BufRead,BufNewFile sol.rkt vsp in
+" autocmd BufRead,BufNewFile sol.rkt sp out
+" autocmd BufRead,BufNewFile sol.rkt vertical resize -25
 
 autocmd BufRead,BufNewFile *.tex filetype plugin indent on
 autocmd BufRead,BufNewFile *.tex nnoremap gve :tabnew err.log<CR>
 
 "autocmd BufWrite * if localtime() % 10 == 0 | let x = input("Vim Crashed. Press enter to continue") | wqa | endif
 
-autocmd BufRead,BufNewFile *.rkt ab lambda λ
+" For CS 245E
+autocmd BufRead,BufNewFile *.rkt inoremap \lam λ
+autocmd BufRead,BufNewFile *.rkt inoremap \and ∧
+autocmd BufRead,BufNewFile *.rkt inoremap \or ∨
+autocmd BufRead,BufNewFile *.rkt inoremap \not ¬

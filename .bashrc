@@ -379,6 +379,10 @@ function gen(){
 	fi
 }
 
+function dis(){
+	objdump -d -Mintel $1 > $1.s
+}
+
 alias cd..='cd ..'
 alias cls='printf "\033c"'
 alias ref='source ~/.bashrc'
@@ -392,15 +396,11 @@ alias dmoj='cd ~/Comp/DMOJ'
 alias timus='cat ~/Comp/Timus/judge.txt'
 alias fuck='eval "sudo $(fc -ln -1)"'
 alias options='echo download-data upload-data upload-code'
-alias download-data='cd ~/Dev/mactimetable/ && lftp -c "lftp files.000webhost.com && lftp -u timetables,$LFTP_PASS && mirror data/ --exclude-glob verify.py"'
-alias upload-data='cd ~/Dev/mactimetable/ && lftp -c "lftp files.000webhost.com && lftp -u timetables,$LFTP_PASS && mirror data/ --reverse --delete --exclude-glob .git/ --exclude-glob .*.swp --exclude-glob log.txt --exclude-glob verify.py"'
-alias upload-code='echo "Remember to commit/push!" && cd ~/Dev/mactimetable/ && lftp -c "lftp files.000webhost.com && lftp -u timetables,$LFTP_PASS && mirror --reverse --delete --exclude-glob data/ --exclude-glob .git/ --exclude-glob .*.swp"'
 alias serve='php -S localhost:8000'
 alias verify='download-data && cd data/ && python verify.py'
-alias check-data='cd ~/Dev/mactimetable/ && lftp -c "lftp files.000webhost.com && lftp -u timetables,$LFTP_PASS && cd data && cat temp.txt"'
 alias edit='vim ~/.bashrc'
 alias vedit='vim ~/.vimrc'
-alias kedit='sudo vim ~/.vim/syntax/c.vim'
+alias kedit='vim ~/.vim/syntax/c.vim'
 alias medit='sudo vim /usr/bin/marktop'
 
 ulimit -c 1048576
@@ -416,6 +416,5 @@ stty -ixon
 
 alias toggle='echo > ~/.vimrc && cp ~/.bashrc_contest ~/.bashrc && source ~/.bashrc_contest && echo Toggled to Contest Mode'
 alias wenv='echo regular'
-alias dedit='vim ~/.bashrc_regular ~/.bashrc_contest -p'
+alias dedit='vim ~/.bashrc_regular ~/.bashrc_contest ~/.vimrc_backup -p'
 alias ev='evince *.pdf'
-alias dia='ssh root@165.227.42.226'
