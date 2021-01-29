@@ -10,21 +10,22 @@ call vundle#end()
 "filetype plugin indent on
 filetype indent on
 
-"Spellcheck
-set spell spelllang=en_ca
-set spell
-hi SpellBad cterm=underline
-hi SpellCap cterm=underline
-hi SpellLocal cterm=underline
-hi SpellRare cterm=underline
-"runtime spell/cleanadd.vim
-
 "Color scheme
 syntax enable
 "let g:solarized_termcolors=256
 "set t_Co=16
 set background=dark
 colorscheme solarized
+
+"Spellcheck
+" NOTE: This must go under the colorscheme settings
+" which overwrite these settings
+"set spell spelllang=en_ca
+highlight SpellBad cterm=underline
+highlight SpellCap cterm=underline
+highlight SpellLocal cterm=underline
+highlight SpellRare cterm=underline
+"runtime spell/cleanadd.vim
 
 "General Behaviour
 "filetype indent on
@@ -60,6 +61,7 @@ nnoremap gml :execute "tabmove" tabpagenr() - 2 <CR>
 nnoremap gmr :execute "tabmove" tabpagenr() + 1<CR>
 nnoremap <C-PageUp> <C-B>
 nnoremap <C-PageDown> <C-F>
+nnoremap yt :tabnew %:t<CR>
 
 "Splitting
 nnoremap ge <C-w><C-w>
@@ -77,9 +79,9 @@ nnoremap <C-K> <C-w>-
 
 "Compile/Run
 "nnoremap gb :w<CR>:!printf "\033c" && printf "================\n  Compiling...\n================\n" && time g++ -O3 -g -std=c++17 -Wno-sign-compare -Wno-unused-result -Wall -Wextra -Wpedantic -Wshadow -Wchkp -fsanitize=address -D LOCAL %:r.cpp -o %:r 2>&1 \| tee %:r.cerr && printf "\n================\n   Running...\n================\n" && time ./%:r < %:r.in > %:r.out 2> %:r.err && printf "\n\n\n\n"<CR>
-autocmd BufRead sol.cpp nnoremap gb :w<CR>:!printf "\033c" && printf "================\n  Compiling...\n================\n" && time g++ -O3 -g -std=c++17 -Wno-sign-compare -Wno-unused-result -Wall -Wextra -Wpedantic -Wshadow -Wchkp -D LOCAL sol.cpp -o sol 2>&1 \| tee comp.log && printf "\n================\n   Running...\n================\n" && time ./sol < in.txt > out.txt 2> err.log && printf "\n\n\n\n"<CR>
+autocmd BufRead sol.cpp nnoremap gb :w<CR>:!printf "\033c" && printf "================\n  Compiling...\n================\n" && time g++ -O2 -g -std=c++17 -Wno-sign-compare -Wno-unused-result -Wall -Wextra -Wpedantic -Wshadow -Wchkp -fsanitize=address -fsanitize=undefined -D LOCAL sol.cpp -o sol 2>&1 \| tee comp.log && printf "\n================\n   Running...\n================\n" && time ./sol < in.txt > out.txt 2> err.log && printf "\n\n\n\n"<CR>
 nnoremap gc :w<CR>:!printf "\033c" && printf "================\n  Compiling...\n================\n" && time g++ -O2 -g -std=c++17 -Wall -Wextra -Wpedantic -Wshadow -Wchkp -Wno-unused-result -D LOCAL gen.cpp -o gen 2>&1 \| tee g_comp.log && printf "\n================\n   Running...\n================\n" && time ./gen < g_in.txt > in.txt 2> g_err.log && printf "\n\n\n\n"<CR>
-nnoremap gs :w<CR>:!printf "\033c" && printf "================\n  Compiling...\n================\n" && time g++ -O3 -g -std=c++17 -Wno-sign-compare -Wno-unused-result -Wall -Wextra -Wpedantic -Wshadow -Wchkp -fsanitize=address -D LOCAL slow.cpp -o slow 2>&1 \| tee s_comp.log && printf "\n================\n   Running...\n================\n" && time ./slow < in.txt > s_out.txt 2> s_err.log && printf "\n\n\n\n"<CR>
+nnoremap gs :w<CR>:!printf "\033c" && printf "================\n  Compiling...\n================\n" && time g++ -O3 -g -std=c++17 -Wno-sign-compare -Wno-unused-result -Wall -Wextra -Wpedantic -Wshadow -Wchkp -fsanitize=address -D LOCAL slow.cpp -o slow 2>&1 \| tee s_comp.log && printf "\n================\n   Running...\n================\n" && time ./slow < in.txt > s_out.txt 2> s_err.log && printf "\n\n\n\n"<CR>:!diff <(nl out.txt) <(nl s_out.txt) > diff.txt<CR>
 
 "nnoremap gc :w<CR>:!printf "\033c" && printf "================\n  Compiling...\n================\n" && time g++ -O2 -g -std=c++14 -Wall -Wextra -Wpedantic -Wshadow -Wchkp -Wno-unused-result -D LOCAL %:r.cc -o %:r_gen && printf "\n================\n   Running...\n================\n" && time ./%:r_gen > %:r.in && printf "\n\n\n\n"<CR>
 "nnoremap gc :w<CR>:!time g++ -std=c++14 -Wall -Wno-unused-result -O2 %:r.cc -o %:r_gen<CR>:!time ./%:r_gen > %:r.in<CR>
@@ -98,7 +100,8 @@ nnoremap gp <Nop>
 
 "Misc Bindings
 nnoremap grs :so ~/.vimrc<CR>:e<CR>
-nnoremap gn :noh<CR>:syntax sync fromstart<CR>
+nnoremap gn :noh<CR>
+":syntax sync fromstart<CR>
 nnoremap Q <C-q>
 nnoremap K <nop>
 vnoremap K <nop>
@@ -113,18 +116,22 @@ nnoremap gvv :tabnew ~/.vimrc<CR>
 nnoremap gvt :tabnew ~/template.cpp<CR>
 nnoremap gvg :tabnew ~/gen.cpp<CR>
 nnoremap gvs :tabnew ~/.vim/UltiSnips/tex.snippets<CR>
-nnoremap grh :syntax sync fromstart<CR>
+"nnoremap grh :syntax sync fromstart<CR>
 
 " Saving behavior
 nnoremap s :w<CR>
-" nnoremap s <NOP>
 nnoremap S <NOP>
 
 " Competitive setup
 nnoremap grd :%s/.\+d(".\+\n//g<CR>
 nnoremap gre :%s/nnoremap gd /d("<CR>n
 nmap gi :vsp err.log<CR>fh30<C-L>:tabnew in.txt<CR>:sp comp.log<CR>ge5<C-J>:vsp out.txt<CR>:vsp err.log<CR>2fh:tabnew gen.cpp<CR>:vsp g_in.txt<CR>fh30<C-L>:tabnew g_in.txt<CR>:sp g_comp.log<CR>ge5<C-J>:vsp in.txt<CR>:vsp g_err.log<CR>2fh:tabnew slow.cpp<CR>:vsp s_err.log<CR>fh30<C-L>:tabnew in.txt<CR>:sp s_comp.log<CR>ge5<C-J>:vsp s_out.txt<CR>:vsp s_err.log<CR>2fhgk
-autocmd BufRead sol.cpp nested normal gi
+" Contest mode (if no pre-written code is allowed)
+"nmap gi :tabnew in.txt<CR>:tabnew out.txt<CR>:tabnew err.log<CR>:tabnew comp.log<CR>gk
+if &diff
+else
+	autocmd BufRead sol.cpp nested normal gi
+endif
 
 "Autocomplete
 inoremap {[ {<CR>}<Esc>O
@@ -175,7 +182,27 @@ autocmd BufRead,BufNewFile *.v ab product ∏
 autocmd BufRead,BufNewFile *.v ab lambda λ
 
 " TeX autocompile
-autocmd BufRead *.tex nnoremap gb :w <CR> :!printf "\033c" && pdflatex --shell-escape -halt-on-error %:t > err.log 2>&1 <CR><CR>
+autocmd BufRead,BufNewFile *.tex set spell
+autocmd BufRead,BufNewFile *.tex inoremap <C-l> <c-g>u<Esc>[s1z=`]a<c-g>u
+autocmd BufRead,BufNewFile *.tex sp status.log
+" Fix this later
+autocmd BufRead,BufNewFile *.tex wincmd -
+autocmd BufRead,BufNewFile *.tex wincmd -
+autocmd BufRead,BufNewFile *.tex wincmd -
+autocmd BufRead,BufNewFile *.tex wincmd -
+autocmd BufRead,BufNewFile *.tex wincmd -
+autocmd BufRead,BufNewFile *.tex wincmd -
+autocmd BufRead,BufNewFile *.tex wincmd -
+autocmd BufRead,BufNewFile *.tex wincmd -
+autocmd BufRead,BufNewFile *.tex wincmd -
+autocmd BufRead,BufNewFile *.tex wincmd -
+autocmd BufRead,BufNewFile *.tex wincmd -
+autocmd BufRead,BufNewFile *.tex wincmd -
+autocmd BufRead,BufNewFile *.tex wincmd -
+autocmd BufRead,BufNewFile *.tex normal ge
+
+" Experimentally compile twice for beamer stuff
+autocmd BufRead *.tex nnoremap gb :w<CR>:!printf "\033c" && pdflatex --shell-escape -halt-on-error %:t > err.log 2>&1<CR><CR>:!~/latextool %:t err.log status.log<CR><CR>:!printf "\033c" && pdflatex --shell-escape -halt-on-error %:t > err.log 2>&1<CR><CR>:!~/latextool %:t err.log status.log<CR><CR>
 
 " Scroll to the end when entering err.log (VERY EXPERIMENTAL)
 autocmd BufEnter err.log normal G
@@ -202,5 +229,8 @@ autocmd BufRead,BufNewFile *.tex nnoremap gve :tabnew err.log<CR>
 " For CS 245E
 autocmd BufRead,BufNewFile *.rkt inoremap \lam λ
 autocmd BufRead,BufNewFile *.rkt inoremap \and ∧
-autocmd BufRead,BufNewFile *.rkt inoremap \or ∨
+autocmd BufRead,BufNewFile *.rkt inoremap \or  ∨
 autocmd BufRead,BufNewFile *.rkt inoremap \not ¬
+autocmd BufRead,BufNewFile *.rkt inoremap \bot ⊥
+autocmd BufRead,BufNewFile *.rkt inoremap \for ∀
+autocmd BufRead,BufNewFile *.rkt inoremap \ex  ∃
